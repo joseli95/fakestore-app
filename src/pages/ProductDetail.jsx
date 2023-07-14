@@ -7,7 +7,7 @@ export default function ProductDetail () {
   const [product, setProduct] = useState([])
   const { id } = useParams()
   const { getProduct } = useApi()
-  const { dispatch } = useCartContext()
+  const { dispatch, state: { cart } } = useCartContext()
 
   useEffect(() => {
     getProduct(id).then((p) => {
@@ -28,15 +28,28 @@ export default function ProductDetail () {
         <p>{product.description}</p>
         <span>${product.price}</span>
 
-        <button
-          className='bg-black hover:bg-gray-800 text-white rounded-md p-2 mt-2'
-          onClick={() => {
-            dispatch({ type: 'ADD_TO_CART', payload: product })
-            alert('Producto añadido al carrito')
-          }}
-        >
-          Add to cart
-        </button>
+        {
+          cart.length === 0 || !cart.some((el) => el.id === product.id)
+            ? (
+              <button
+                className='bg-black hover:bg-gray-800 text-white rounded-md p-2 mt-2'
+                onClick={() => {
+                  dispatch({ type: 'ADD_TO_CART', payload: product })
+                  alert('Producto añadido al carrito')
+                }}
+              >
+                Add to cart
+              </button>
+              )
+            : (
+              <button
+                className='text-red-600'
+                onClick={() => dispatch({ type: 'REMOVE_FROM_CART', payload: product })}
+              >
+                Eliminar
+              </button>
+              )
+        }
       </div>
     </>
   )
