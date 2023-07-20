@@ -35,6 +35,7 @@ export default function ProductDetail () {
                 className='bg-black hover:bg-gray-800 text-white rounded-md p-2 mt-2'
                 onClick={() => {
                   dispatch({ type: 'ADD_TO_CART', payload: product })
+                  // eslint-disable-next-line no-undef
                   alert('Producto añadido al carrito')
                 }}
               >
